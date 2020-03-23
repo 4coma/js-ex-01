@@ -11,13 +11,6 @@
 
 <body>
 
-
-
-
-
-
-
-
 <table>
 
 <tr>
@@ -27,6 +20,10 @@
 <td><button type="submit"> Recommencer </button></td>
 </tr>
 
+<tr>
+<td> Tableau aléatoire : </td>
+<td> <input id="randomArrT" placeholder="0" readonly> </td>
+</tr>
 
 <tr>
 <td> Le nombre de nombres entrés : </td>
@@ -67,14 +64,57 @@
 
 <script type="text/javascript">
 
+	//Tableau aléatoire
+
+	var randomArr = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+	document.getElementById("randomArrT").value = randomArr;
+	nOfN = randomArr.length;
+	sumOfN = randomArr.reduce(function(a, b){return a + b;}, 0);
+	bigN = Math.max(...randomArr);
+	smallN = Math.min(...randomArr);
+	avN = sumOfN / randomArr.length;
+	allN = randomArr;
+	newArr = [];
+	counter = 1;
+	sliceEnd = 0;
+	sliceStart = 0;
+	hSeqN = [];
+	lastNofSeq = [];
+
+	document.getElementById("nOfNTag").value = nOfN;
+	document.getElementById("sumOfNTag").value = sumOfN;	
+	document.getElementById("bigNTag").value = bigN;
+	document.getElementById("smallNTag").value = smallN;
+	document.getElementById("avNTag").value = avN;
+	document.getElementById("allNTag").innerHTML = allN; 
+
+
+		for (var i = 0; i <= randomArr.length - 1; i++){
+		if (randomArr[i] < randomArr[i+1]){
+			counter ++;
+			console.log(counter);
+
+		}
+
+		else {
+			newArr.push(counter);
+			lastNofSeq.push(randomArr.indexOf(randomArr[i]));
+			sliceEnd = lastNofSeq[newArr.indexOf(Math.max(...newArr))] + 1;
+			sliceStart = sliceEnd - Math.max(...newArr);
+			hSeqN = randomArr.slice(sliceStart, sliceEnd);
+			document.getElementById("hSeqNTag").value = hSeqN;
+			counter = 1;
+		}
+	}
+
 var arrNumbers = [];
 
 function submitF(){
 
-	var xxx = document.getElementById("nbEntier").value;
+	var newN = document.getElementById("nbEntier").value;
 
-	if (!isNaN(parseInt(xxx))){
-	arrNumbers.push(+xxx);
+	if (!isNaN(parseInt(newN))){
+	arrNumbers.push(+newN);
 	console.log(arrNumbers);
 
 	calculX();
@@ -83,13 +123,14 @@ function submitF(){
 
 	else{
 	window.alert("Veuillez entrer un nombre entier.");
-	console.log("La donnée encodée suiante n'a pas été ajoutée au tableau : " + xxx);
+	console.log("La donnée encodée suiante n'a pas été ajoutée au tableau : " + newN);
 	}
 
 	}
 
 function calculX(){
-	var nOfN, sumOfN, bigN, smallN, avN, allN, hSeqN;
+	var nOfN, sumOfN, bigN, smallN, avN, allN, hSeqN; 
+
 
 	//Nombre de nombres entrés
 	nOfN = arrNumbers.length;
@@ -113,7 +154,7 @@ function calculX(){
 
 	//Liste de tous les nombres entrés
 	allN = arrNumbers;
-	document.getElementById("allNTag").value = allN; 
+	document.getElementById("allNTag").innerHTML = allN; 
 
 	//Plus grande séquence de nombres croissants entrés
 
@@ -123,8 +164,6 @@ function calculX(){
 	sliceStart = 0;
 	hSeqN = [];
 	lastNofSeq = [];
-	testArr = [1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5, 1, 2, 7, 9, 10, 13, 15, 17, 18, 22, 1, 2, 48];
-
 
 	for (var i = 0; i < arrNumbers.length; i++){
 		if (arrNumbers[i] < arrNumbers[i+1]){
@@ -143,9 +182,6 @@ function calculX(){
 			document.getElementById("hSeqNTag").value = hSeqN;
 
 			counter = 1;
-
-
-
 		}
 	}
 
